@@ -11,7 +11,8 @@
 <p align="center">
   <a href="https://travis-ci.org/QingWei-Li/docsify"><img alt="Travis Status" src="https://img.shields.io/travis/QingWei-Li/docsify/master.svg?style=flat-square"></a>
   <a href="https://www.npmjs.com/package/docsify"><img alt="npm" src="https://img.shields.io/npm/v/docsify.svg?style=flat-square"></a>
-<a href="https://app.fossa.io/projects/git%2Bdemo%24demo?ref=badge_small" alt="FOSSA Status"><img src="https://app.fossa.io/api/projects/git%2Bdemo%24demo.svg?type=small"/></a>  <a href="https://cdnjs.com/libraries/docsify"><img alt="cdnjs" src="https://img.shields.io/cdnjs/v/docsify.svg?style=flat-square"></a>
+<a href="https://app.fossa.io/projects/git%2Bdemo%24demo?ref=badge_small" alt="FOSSA Status"><img src="https://app.fossa.io/api/projects/git%2Bdemo%24demo.svg?type=small"/></a>
+  <a href="https://cdnjs.com/libraries/docsify"><img alt="cdnjs" src="https://img.shields.io/cdnjs/v/docsify.svg?style=flat-square"></a>
   <a href="https://github.com/QingWei-Li/donate"><img alt="donate" src="https://img.shields.io/badge/%24-donate-ff69b4.svg?style=flat-square"></a>
 </p>
 

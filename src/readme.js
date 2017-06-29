@@ -42,7 +42,7 @@ var ReadmeInjector = {
     	match = txt.match(matchers[i].search)
     	if (match) {
 	      return txt.slice(0, match.index + match[0].length) +
-	    			ReadmeInjector.getBadgeCode(locator, 'small', matchers[i].type || 'markdown') +
+	    			ReadmeInjector.getBadgeCode(locator, 'small', matchers[i].type || 'markdown') + '\n' +
 	    			txt.slice(match.index + match[0].length)
 	    }
     }

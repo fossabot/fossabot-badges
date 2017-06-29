@@ -19,7 +19,6 @@ describe('Readme', function () {
 
         if (!beforeTestCase) continue
         console.log('Testing: ' + files[i])
-        console.log(ReadmeInjector.transform(beforeTestCase, 'git+demo$demo'))
         expect(ReadmeInjector.transform(beforeTestCase, 'git+demo$demo')).toBe(afterTestCase)
         console.log(files[i] + ' passing')
       }
