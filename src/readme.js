@@ -20,13 +20,21 @@ var ReadmeInjector = {
 	    {
 	    	search: /((\[?!(\[[^\]]+\]){1,2}\]?[\(\[][^\)\]]+[\)\]]{1,2}(\([^\)]+\))?\s?)+)/i,
 	    	type: 'markdown'
-	    }
+	    },
     	// html - Unlike markdown badges, this requires more than one image link side by side to match.
+    	{
+    		search: /(<a[^>]+>(\s+)?<img[^>]+\\?>(\s+)?<\/a>\s+?){2,}/i,
+    		type: 'html'
+    	},
     	// title -
-    		/*
-			As a last resort if no badges are found, find the first h1/h2
-			title in the readme and insert the badge underneath
-		 */
+    	/*
+				As a last resort if no badges are found, find the first h1/h2
+				title in the readme and insert the badge underneath
+			 */
+		  {
+    		search: /^#{1,2}[^#\n]+\n/im,
+    		type: 'markdown'
+    	}
     ]
 
     var match
