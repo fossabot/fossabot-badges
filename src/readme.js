@@ -21,29 +21,42 @@ var ReadmeInjector = {
 
 	},
 	insertShield: function (txt, locator) {
-		var searchMarkdownBadgeList;
+		/* 
+			Find a linked badge or badge list and append the shield
+			Supports all sorts of mixed markdown badge formats, including linked, unlinked and variable defs
+		*/
+		var searchMarkdownBadgeList = /(\[?!(\[[^\]]+\]){1,2}\]?[\(\[][^\)\]]+[\)\]]{1,2}(\([^\)]+\))?\s?)+/ig
 		if () {
 
 		}
 
+		/* 
+			Unlike markdown badges, this requires more than one image link side by side to match.
+		*/
 		var searchHtmlBadgeList;
 		if () {
 			// find list and append HTML badge
 		}
 
+		/*
+			As a last resort if no badges are found, find the first h1/h2 
+			title in the readme and insert the badge underneath
+		 */
 		var searchTitle;
 		if () {
 			// add below title
 		}
-		return txt; // no updates if README is empty
+
+		return txt; // no updates if README is empty or no insert strategy is found
 	},
 	insertLargeBadge: function (txt, locator) {
 		var searchLicenseSection = /[ #]+licen(c|s)e(.+|)(\n|\b)[^#]+/ig
 		var badgeCode = ReadmeInjector.getBadgeCode(locator, 'large', 'markdown')
 
 		if(searchLicenseSection.match(txt)) {
-			
+			// if theres a section of the readme that talks about the license, append inside
 		} else {
+			// otherwise, create the section and append the large badge
 			txt += '\n\n## License\n' + badgeCode
 		}
 		return txt;
