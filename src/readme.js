@@ -9,64 +9,65 @@ var ReadmeInjector = {
     }
     readme = ReadmeInjector.insertShield(readme, locator)
     readme = ReadmeInjector.insertLargeBadge(readme, locator)
-    return readme
+    return readme.trim()
   },
   insertShield: function (txt, locator) {
     var matchers = [
-  		/*
-				Find a linked badge or badge list AFTER ANY HEADER and append the shield
-				Supports all sorts of mixed markdown badge formats, including linked, unlinked and variable defs
-			*/
-	    {
-	    	search: /#+.+\s+((\[?!(\[[^\]]+\]){1,2}\]?[\(\[][^\)\]]+[\)\]]{1,2}(\([^\)]+\))?\s?)+)/i,
-	    	type: 'markdown'
-	    },
-    	// html - Unlike markdown badges, this requires more than one image link side by side to match.
-    	{
-    		search: /(<a[^>]+>(\s+)?<img[^>]+\\?>(\s+)?<\/a>\s+?){2,}/i,
-    		type: 'html'
-    	},
-    	/*
-				Search again for badges, but without the header requirement
-    	*/
-	    {
-	    	search: /((\[?!(\[[^\]]+\]){1,2}\]?[\(\[][^\)\]]+[\)\]]{1,2}(\([^\)]+\))?\s?)+)/i,
-	    	type: 'markdown'
-	    },
-    	// title -
-    	/*
-				As a last resort if no badges are found, find the first h1/h2
-				title in the readme and insert the badge underneath
-			 */
-		  {
-    		search: /^#{1,2}[^#\n]+\n/im,
-    		type: 'markdown'
-    	}
+      /*
+        Find a linked badge or badge list AFTER ANY HEADER and append the shield
+        Supports all sorts of mixed markdown badge formats, including linked, unlinked and variable defs
+      */
+      {
+        search: /#+.+\s+((\[?!(\[[^\]]+\]){1,2}\]?[\(\[][^\)\]]+[\)\]]{1,2}(\([^\)]+\))?\s?)+)/i,
+        type: 'markdown'
+      },
+      // html - Unlike markdown badges, this requires more than one image link side by side to match.
+      {
+        search: /(<a[^>]+>(\s+)?<img[^>]+\\?>(\s+)?<\/a>\s+?){2,}/i,
+        type: 'html'
+      },
+      /*
+        Search again for badges, but without the header requirement
+      */
+      {
+        search: /((\[?!(\[[^\]]+\]){1,2}\]?[\(\[][^\)\]]+[\)\]]{1,2}(\([^\)]+\))?\s?)+)/i,
+        type: 'markdown'
+      },
+      // title -
+      /*
+        As a last resort if no badges are found, find the first h1/h2
+        title in the readme and insert the badge underneath
+       */
+      {
+        search: /^#{1,2}[^#\n]+\n/im,
+        type: 'markdown',
+        spacing: 2
+      }
     ]
 
     var match
     for (var i = 0; i < matchers.length; i++) {
-    	match = txt.match(matchers[i].search)
-    	if (match) {
-	      return txt.slice(0, match.index + match[0].length) +
-    			ReadmeInjector.getBadgeCode(locator, 'small', matchers[i].type || 'markdown') + '\n' +
-    			txt.slice(match.index + match[0].length)
-	    }
+      match = txt.match(matchers[i].search)
+      if (match) {
+        return txt.slice(0, match.index + match[0].length) +
+          ReadmeInjector.getBadgeCode(locator, 'small', matchers[i].type || 'markdown') + '\n'.repeat(matchers[i].spacing || 1) +
+          txt.slice(match.index + match[0].length)
+      }
     }
 
-    return txt // no updates if README is empty or no insert strategy is found
+    return ReadmeInjector.getBadgeCode(locator, 'small', 'markdown') + '\n\n' + txt // finally, just dump it at the front
   },
   insertLargeBadge: function (txt, locator) {
     var searchLicenseSection = /(\n[ #]+(.+)?licen(c|s).+[\s\S]+?)(\n#|$)/i // note hash might match in section link
     var badgeCode = ReadmeInjector.getBadgeCode(locator, 'large', 'markdown')
     var match = txt.match(searchLicenseSection)
     if (match) {
-			// if theres a section of the readme that talks about the license, append inside
+      // if theres a section of the readme that talks about the license, append inside
       return txt.slice(0, match.index + match[1].length) + '\n\n' +
-    		ReadmeInjector.getBadgeCode(locator, 'large', 'markdown') + '\n' +
-  			txt.slice(match.index + match[1].length)
+        ReadmeInjector.getBadgeCode(locator, 'large', 'markdown') + '\n' +
+        txt.slice(match.index + match[1].length)
     } else {
-			// otherwise, create the section and append the large badge
+      // otherwise, create the section and append the large badge
       txt += '\n\n## License\n' + badgeCode
     }
     return txt

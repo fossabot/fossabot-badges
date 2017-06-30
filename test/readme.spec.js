@@ -14,8 +14,8 @@ describe('Readme', function () {
       var afterTestCase
 
       for (var i = 0; i < files.length; i++) {
-        var beforeTestCase = fs.readFileSync(files[i]).toString().trim()
-        var afterTestCase = fs.readFileSync(files[i].slice(0, -10) + '.after.md').toString().trim()
+        var beforeTestCase = fs.readFileSync(files[i]).toString()
+        var afterTestCase = fs.readFileSync(files[i].slice(0, -10) + '.after.md').toString()
 
         if (!beforeTestCase) continue
         console.log('Testing: ' + files[i])
