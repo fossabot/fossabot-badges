@@ -5,6 +5,8 @@
 
 var GithubClient = require('./src/pullrequest.js')
 
-GithubClient.makePR('asd').then(console.log, function (err) {
+GithubClient.makePR('asd').then(function (number) {
+  return GithubClient.updatePR('asd', number)
+}, function (err) {
   console.log(err.stack)
 })

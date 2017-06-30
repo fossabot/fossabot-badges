@@ -22,21 +22,21 @@ try {
 
 var GithubClient = {
   parseGithubParts: function (locator) {
-		// TODO
+    // TODO
     return {
       owner: 'fossas',
       repo: 'badge-tester'
     }
   },
-	// getClient()
+  // getClient()
   makePR: function (locator, auth) {
     var client = github
     var base_repo_parts = GithubClient.parseGithubParts(locator)
     return Promise.resolve().then(function () {
       if (auth) {
-      	github.authenticate(auth)
+        github.authenticate(auth)
       }
-			// fork it into our master fossabot account
+      // fork it into our master fossabot account
       return client.repos.fork(base_repo_parts).then(function (repo) {
         return {
           owner: repo.data.owner.login,
@@ -58,18 +58,27 @@ var GithubClient = {
         })
       }).then(function () {
         return client.pullRequests.create({
-		      owner: base_repo_parts.owner,
-		      repo: base_repo_parts.repo,
-		      head: (auth ? auth.username : auth_default.username) + ':' + repo_parts.ref,
-		      base: repo_parts.ref,
-		      title: 'Add license scan report and status',
-		      body: 'Your FOSSA integration was successful!\n\nAttached in this PR is a badge and license report to track scan status in your README.'
+          owner: base_repo_parts.owner,
+          repo: base_repo_parts.repo,
+          head: (auth ? auth.username : auth_default.username) + ':' + repo_parts.ref,
+          base: repo_parts.ref,
+          title: 'Add license scan report and status',
+          body: 'Your FOSSA integration was successful!\n\nAttached in this PR is a badge and license report to track scan status in your README.'
+        }).then(function (pull_request) {
+          return pull_request.data.number
         })
       })
     })
   },
-  updatePR: function () {
-    github.pullRequests.createComment({ })
+  updatePR: function (locator, number) {
+    var client = github
+    var base_repo_parts = GithubClient.parseGithubParts(locator)
+    return client.issues.createComment({
+      owner: base_repo_parts.owner,
+      repo: base_repo_parts.repo,
+      number: number,
+      body: 'Your license scan is passing -- congrats!\n\nYour badge status is now updated and ready to merge:\n\n' + ReadmeInjector.getBadgeCode(locator, 'small', 'markdown')
+    })
   }
 }
 

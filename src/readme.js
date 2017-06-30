@@ -73,6 +73,9 @@ var ReadmeInjector = {
     return txt
   },
   getBadgeCode: function (locator, type, format) {
+    if (!type) type = 'markdown'
+    if (!format) type = 'small'
+
     var svgLink = 'https://app.fossa.io/api/projects/' + encodeURIComponent(locator) + '.svg?type=' + type
     var browserLink = 'https://app.fossa.io/projects/' + encodeURIComponent(locator) + '?ref=badge_' + type
 
