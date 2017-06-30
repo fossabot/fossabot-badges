@@ -22,10 +22,11 @@ try {
 
 var GithubClient = {
   parseGithubParts: function (locator) {
-    // TODO
+    var match = locator.match(/github.com\/([^\/]+)\/([A-Za-z0-9_.-]+)/i)
+    if (!match) throw new Error('Invalid github locator')
     return {
-      owner: 'fossas',
-      repo: 'badge-tester'
+      owner: match[1],
+      repo: match[2]
     }
   },
   // getClient()

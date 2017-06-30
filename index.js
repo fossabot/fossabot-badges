@@ -5,8 +5,9 @@
 
 var GithubClient = require('./src/pullrequest.js')
 
-GithubClient.makePR('asd').then(function (number) {
-  return GithubClient.updatePR('asd', number)
+var locator = 'git+github.com/fossas/badge-tester'
+GithubClient.makePR(locator).then(function (number) {
+  return GithubClient.updatePR(locator, number)
 }, function (err) {
   console.log(err.stack)
 })
