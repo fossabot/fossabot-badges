@@ -8,17 +8,17 @@ var ReadmeInjector = {
       throw new Error('FOSSA badge already exists in README.')
     }
     readme = ReadmeInjector.insertShield(readme, locator)
-    // readme = ReadmeInjector.insertLargeBadge(readme, locator);
+    readme = ReadmeInjector.insertLargeBadge(readme, locator)
     return readme
   },
   insertShield: function (txt, locator) {
     var matchers = [
   		/*
-				Find a linked badge or badge list and append the shield
+				Find a linked badge or badge list AFTER ANY HEADER and append the shield
 				Supports all sorts of mixed markdown badge formats, including linked, unlinked and variable defs
 			*/
 	    {
-	    	search: /((\[?!(\[[^\]]+\]){1,2}\]?[\(\[][^\)\]]+[\)\]]{1,2}(\([^\)]+\))?\s?)+)/i,
+	    	search: /#+.+\s+((\[?!(\[[^\]]+\]){1,2}\]?[\(\[][^\)\]]+[\)\]]{1,2}(\([^\)]+\))?\s?)+)/i,
 	    	type: 'markdown'
 	    },
     	// html - Unlike markdown badges, this requires more than one image link side by side to match.
@@ -26,6 +26,13 @@ var ReadmeInjector = {
     		search: /(<a[^>]+>(\s+)?<img[^>]+\\?>(\s+)?<\/a>\s+?){2,}/i,
     		type: 'html'
     	},
+    	/*
+				Search again for badges, but without the header requirement
+    	*/
+	    {
+	    	search: /((\[?!(\[[^\]]+\]){1,2}\]?[\(\[][^\)\]]+[\)\]]{1,2}(\([^\)]+\))?\s?)+)/i,
+	    	type: 'markdown'
+	    },
     	// title -
     	/*
 				As a last resort if no badges are found, find the first h1/h2
@@ -42,19 +49,22 @@ var ReadmeInjector = {
     	match = txt.match(matchers[i].search)
     	if (match) {
 	      return txt.slice(0, match.index + match[0].length) +
-	    			ReadmeInjector.getBadgeCode(locator, 'small', matchers[i].type || 'markdown') + '\n' +
-	    			txt.slice(match.index + match[0].length)
+    			ReadmeInjector.getBadgeCode(locator, 'small', matchers[i].type || 'markdown') + '\n' +
+    			txt.slice(match.index + match[0].length)
 	    }
     }
 
     return txt // no updates if README is empty or no insert strategy is found
   },
   insertLargeBadge: function (txt, locator) {
-    var searchLicenseSection = /[ #]+licen(c|s)e(.+|)(\n|\b)[^#]+/ig // note hash might match in section link
+    var searchLicenseSection = /(\n[ #]+(.+)?licen(c|s).+[\s\S]+?)(\n#|$)/i // note hash might match in section link
     var badgeCode = ReadmeInjector.getBadgeCode(locator, 'large', 'markdown')
-
-    if (searchLicenseSection.match(txt)) {
+    var match = txt.match(searchLicenseSection)
+    if (match) {
 			// if theres a section of the readme that talks about the license, append inside
+      return txt.slice(0, match.index + match[1].length) + '\n\n' +
+    		ReadmeInjector.getBadgeCode(locator, 'large', 'markdown') + '\n' +
+  			txt.slice(match.index + match[1].length)
     } else {
 			// otherwise, create the section and append the large badge
       txt += '\n\n## License\n' + badgeCode

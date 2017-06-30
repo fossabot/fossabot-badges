@@ -98,3 +98,5 @@ open http://localhost:3000
 ## License
 
 MIT
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bdemo%24demo.svg?type=large)](https://app.fossa.io/projects/git%2Bdemo%24demo?ref=badge_large)

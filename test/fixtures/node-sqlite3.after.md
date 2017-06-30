@@ -193,3 +193,5 @@ Development of this module is sponsored by [MapBox](http://mapbox.org/).
 # License
 
 `node-sqlite3` is [BSD licensed](https://github.com/mapbox/node-sqlite3/raw/master/LICENSE).
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bdemo%24demo.svg?type=large)](https://app.fossa.io/projects/git%2Bdemo%24demo?ref=badge_large)
