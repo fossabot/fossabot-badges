@@ -15,7 +15,6 @@ var auth_default
 
 try {
   auth_default = JSON.parse(fs.readFileSync('.fossabot').toString())
-  github.authenticate(auth_default)
 } catch (e) {
   console.log('Invalid default auth configured: ' + e.message)
 }
@@ -29,9 +28,17 @@ var GithubClient = {
       repo: match[2]
     }
   },
-  // getClient()
+  getClient: function (auth) {
+  	var client = github
+  	if (auth) {
+  		client.authenticate(auth)
+  	} else if (auth_default) {
+  		github.authenticate(auth_default)
+  	}
+  	return client
+  },
   makePR: function (locator, auth) {
-    var client = github
+    var client = GithubClient.getClient(auth)
     var base_repo_parts = GithubClient.parseGithubParts(locator)
     return Promise.resolve().then(function () {
       if (auth) {
@@ -71,8 +78,8 @@ var GithubClient = {
       })
     })
   },
-  updatePR: function (locator, number) {
-    var client = github
+  updatePR: function (locator, number, auth) {
+    var client = GithubClient.getClient(auth)
     var base_repo_parts = GithubClient.parseGithubParts(locator)
     return client.issues.createComment({
       owner: base_repo_parts.owner,
