@@ -4,9 +4,9 @@
 var ReadmeInjector = {
   transform: function (readme, locator) {
     // if (!readme) throw new Error('No README specified; create one first.')
-    // if (readme.indexOf('FOSSA Status') != -1 || readme.indexOf('fossa.io') != -1) {
-    //   throw new Error('FOSSA badge already exists in README.')
-    // }
+    if (readme.indexOf('FOSSA Status') != -1 || readme.indexOf('fossa.io') != -1) {
+      throw new Error('FOSSA badge already exists in README.')
+    }
     readme = ReadmeInjector.insertShield(readme, locator)
     // readme = ReadmeInjector.insertLargeBadge(readme, locator);
     return readme
