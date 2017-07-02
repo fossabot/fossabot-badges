@@ -71,10 +71,9 @@ var GithubClient = {
           head: (auth ? auth.username : auth_default.username) + ':' + repo_parts.ref,
           base: repo_parts.ref,
           title: 'Add license scan report and status',
-          body: 'Your FOSSA integration was successful!\n\n\
-Attached in this PR is a badge and license report to track scan status in your README.\n\n\
+          body: 'Your FOSSA integration was successful! Attached in this PR is a badge and license report to track scan status in your README.\n\n\
 Below are docs for integrating FOSSA license checks into your CI:\n\n\
-- [CircleCI](http://fossa.io/docs/integrating-tools/circleci/)\n-[TravisCI](http://fossa.io/docs/integrating-tools/travisci/)\n-[Jenkins](https://github.com/fossas/fossa-jenkins-plugin)\n-[Other](https://github.com/fossas/license-cli)'
+- [CircleCI](http://fossa.io/docs/integrating-tools/circleci/)\n- [TravisCI](http://fossa.io/docs/integrating-tools/travisci/)\n- [Jenkins](https://github.com/fossas/fossa-jenkins-plugin)\n- [Other](https://github.com/fossas/license-cli)'
         }).then(function (pull_request) {
           return pull_request.data.number
         })
