@@ -50,12 +50,12 @@ var ReadmeInjector = {
       match = txt.match(matchers[i].search)
       if (match) {
         return txt.slice(0, match.index + match[0].length) +
-          ReadmeInjector.getBadgeCode(locator, 'small', matchers[i].type || 'markdown') + '\n'.repeat(matchers[i].spacing || 1) +
+          ReadmeInjector.getBadgeCode(locator, 'shield', matchers[i].type || 'markdown') + '\n'.repeat(matchers[i].spacing || 1) +
           txt.slice(match.index + match[0].length)
       }
     }
 
-    return ReadmeInjector.getBadgeCode(locator, 'small', 'markdown') + '\n\n' + txt // finally, just dump it at the front
+    return ReadmeInjector.getBadgeCode(locator, 'shield', 'markdown') + '\n\n' + txt // finally, just dump it at the front
   },
   insertLargeBadge: function (txt, locator) {
     var searchLicenseSection = /(\n[ #]+(.+)?licen(c|s).+[\s\S]+?)(\n#|$)/i // note hash might match in section link
@@ -74,7 +74,7 @@ var ReadmeInjector = {
   },
   getBadgeCode: function (locator, type, format) {
     if (!type) type = 'markdown'
-    if (!format) type = 'small'
+    if (!format) type = 'shield'
 
     var svgLink = 'https://app.fossa.io/api/projects/' + encodeURIComponent(locator) + '.svg?type=' + type
     var browserLink = 'https://app.fossa.io/projects/' + encodeURIComponent(locator) + '?ref=badge_' + type

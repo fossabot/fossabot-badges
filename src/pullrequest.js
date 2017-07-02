@@ -55,7 +55,7 @@ var GithubClient = {
     }).then(function (repo_parts) {
       return client.repos.getReadme(repo_parts).then(function (readme) {
         if (!readme) throw new Error('No readme found')
-        var newReadmeContents = ReadmeInjector.transform(new Buffer(readme.data.content, 'base64').toString('ascii'))
+        var newReadmeContents = ReadmeInjector.transform(new Buffer(readme.data.content, 'base64').toString('ascii'), locator)
         return client.repos.updateFile({
           owner: repo_parts.owner,
           repo: repo_parts.repo,
@@ -71,7 +71,10 @@ var GithubClient = {
           head: (auth ? auth.username : auth_default.username) + ':' + repo_parts.ref,
           base: repo_parts.ref,
           title: 'Add license scan report and status',
-          body: 'Your FOSSA integration was successful!\n\nAttached in this PR is a badge and license report to track scan status in your README.'
+          body: 'Your FOSSA integration was successful!\n\n\
+Attached in this PR is a badge and license report to track scan status in your README.\n\n\
+Below are docs for integrating FOSSA license checks into your CI:\n\n\
+- [CircleCI](http://fossa.io/docs/integrating-tools/circleci/)\n-[TravisCI](http://fossa.io/docs/integrating-tools/travisci/)\n-[Jenkins](https://github.com/fossas/fossa-jenkins-plugin)\n-[Other](https://github.com/fossas/license-cli)'
         }).then(function (pull_request) {
           return pull_request.data.number
         })
@@ -85,7 +88,7 @@ var GithubClient = {
       owner: base_repo_parts.owner,
       repo: base_repo_parts.repo,
       number: number,
-      body: 'Your license scan is passing -- congrats!\n\nYour badge status is now updated and ready to merge:\n\n' + ReadmeInjector.getBadgeCode(locator, 'small', 'markdown')
+      body: 'Your license scan is passing -- congrats!\n\nYour badge status is now updated and ready to merge:\n\n' + ReadmeInjector.getBadgeCode(locator, 'shield', 'markdown')
     })
   }
 }
