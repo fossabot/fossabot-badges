@@ -29,13 +29,13 @@ var GithubClient = {
     }
   },
   getClient: function (auth) {
-  	var client = github
-  	if (auth) {
-  		client.authenticate(auth)
-  	} else if (auth_default) {
-  		github.authenticate(auth_default)
-  	}
-  	return client
+    var client = github
+    if (auth) {
+      client.authenticate(auth)
+    } else if (auth_default) {
+      github.authenticate(auth_default)
+    }
+    return client
   },
   makePR: function (locator, auth) {
     var client = GithubClient.getClient(auth)
@@ -55,7 +55,7 @@ var GithubClient = {
     }).then(function (repo_parts) {
       return client.repos.getReadme(repo_parts).then(function (readme) {
         if (!readme) throw new Error('No readme found')
-        var newReadmeContents = ReadmeInjector.transform(new Buffer(readme.data.content, 'base64').toString('ascii'), locator)
+        var newReadmeContents = ReadmeInjector.transform(new Buffer(readme.data.content, 'base64').toString('utf8'), locator)
         return client.repos.updateFile({
           owner: repo_parts.owner,
           repo: repo_parts.repo,
